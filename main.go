@@ -6,6 +6,8 @@ import (
 	"github.com/giwiro/escrap/logger"
 	"github.com/giwiro/escrap/modules/version"
 	versionWeb "github.com/giwiro/escrap/modules/version/web"
+
+	scrapWeb "github.com/giwiro/escrap/modules/scrap/web"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -41,6 +43,9 @@ func main() {
 
 	versionController := versionWeb.NewVersionController()
 	versionController.RegisterRoutes(mainRouter)
+
+	scrapController := scrapWeb.NewScrapController()
+	scrapController.RegisterRoutes(mainRouter)
 
 	log.Infof("escrap v%s", version.Version)
 	log.Infof("Listening on: %s", config.Conf.Server.Address)

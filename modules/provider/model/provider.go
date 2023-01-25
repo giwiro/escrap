@@ -8,5 +8,5 @@ const (
 )
 
 type ScrapProviderVendor interface {
-	Scrap(vendorId string) (*ScrapResult, *ScrapProduct, error)
+	Scrap(url string) (*ScrapResult, *ScrapProduct, error)
 }
