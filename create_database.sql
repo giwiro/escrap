@@ -1,0 +1,9 @@
+CREATE ROLE escrap;
+CREATE USER escrap_admin WITH
+  NOSUPERUSER
+  NOCREATEDB
+  PASSWORD 'escrap123'
+  IN ROLE escrap;
+
+CREATE DATABASE escrap WITH OWNER escrap_admin;
+GRANT CONNECT ON DATABASE escrap TO escrap;
