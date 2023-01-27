@@ -3,7 +3,11 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/giwiro/escrap/config"
+	"github.com/giwiro/escrap/database"
 	"github.com/giwiro/escrap/logger"
+	"github.com/giwiro/escrap/modules/provider"
+	providerDatabase "github.com/giwiro/escrap/modules/provider/database"
+	"github.com/giwiro/escrap/modules/scrap"
 	"github.com/giwiro/escrap/modules/version"
 	versionWeb "github.com/giwiro/escrap/modules/version/web"
 
@@ -38,13 +42,18 @@ func setUpEngine() *gin.Engine {
 
 func main() {
 	engine := setUpEngine()
+	gormDB := database.NewDB()
 
 	mainRouter := engine.Group("/api")
 
 	versionController := versionWeb.NewVersionController()
 	versionController.RegisterRoutes(mainRouter)
 
-	scrapController := scrapWeb.NewScrapController()
+	providerDao := providerDatabase.NewScrapProviderPgDao(gormDB)
+	providerUseCase := provider.NewUseCase(providerDao)
+
+	scrapUseCase := scrap.NewUseCase()
+	scrapController := scrapWeb.NewScrapController(scrapUseCase, providerUseCase)
 	scrapController.RegisterRoutes(mainRouter)
 
 	log.Infof("escrap v%s", version.Version)

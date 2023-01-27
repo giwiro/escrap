@@ -1,12 +1,23 @@
 package model
 
-type ScrapProvider int
+type ScrapProvider uint
 
 const (
-	Amazon ScrapProvider = 1
+	Unset  ScrapProvider = 0
+	Amazon               = 1
 	Ebay                 = 2
 )
 
 type ScrapProviderVendor interface {
 	Scrap(url string) (*ScrapResult, *ScrapProduct, error)
+}
+
+func GetScrapProvider(id uint) ScrapProvider {
+	switch id {
+	case 1:
+		return Amazon
+	case 2:
+		return Ebay
+	}
+	return 0
 }

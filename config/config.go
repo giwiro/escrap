@@ -9,13 +9,23 @@ import (
 type Config struct {
 	Environment string
 	Database    struct {
+		Host     string
+		Port     int
 		User     string
 		Password string
-		Address  string
 		DBName   string
 	}
 	Server struct {
 		Address string
+		Ttl     int
+	}
+	Scrapper struct {
+		Amazon struct {
+			MarketplaceLocale string
+			AssociateTag      string
+			AccessKey         string
+			SecretKey         string
+		}
 	}
 }
 

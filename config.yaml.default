@@ -1,10 +1,20 @@
 environment: development
 
 database:
+  host: 127.0.0.1
+  port: 5432
   user: escrap_admin
   password: escrap123
-  address: 127.0.0.1:5432
   dbname: escrap
 
 server:
   address: 127.0.0.1:6969
+  // 5 days in seconds
+  ttl: 432000
+
+scrapper:
+  amazon:
+    marketplace_locale: US
+    associate_tag: XXXXXXXXXXXXX
+    access_key: XXXXXXXXXXXXXXXXXXXX
+    secret_key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
