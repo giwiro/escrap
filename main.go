@@ -52,7 +52,7 @@ func main() {
 	providerDao := providerDatabase.NewScrapProviderPgDao(gormDB)
 	providerUseCase := provider.NewUseCase(providerDao)
 
-	scrapUseCase := scrap.NewUseCase()
+	scrapUseCase := scrap.NewUseCase(providerDao)
 	scrapController := scrapWeb.NewScrapController(scrapUseCase, providerUseCase)
 	scrapController.RegisterRoutes(mainRouter)
 

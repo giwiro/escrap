@@ -9,12 +9,11 @@ database:
 
 server:
   address: 127.0.0.1:6969
-  // 5 days in seconds
-  ttl: 432000
+  // 5 days
+  ttl: 432000000
 
 scrapper:
   amazon:
-    marketplace_locale: US
     associate_tag: XXXXXXXXXXXXX
     access_key: XXXXXXXXXXXXXXXXXXXX
     secret_key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

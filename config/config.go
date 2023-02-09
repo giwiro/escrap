@@ -17,14 +17,13 @@ type Config struct {
 	}
 	Server struct {
 		Address string
-		Ttl     int
+		Ttl     int64
 	}
 	Scrapper struct {
 		Amazon struct {
-			MarketplaceLocale string
-			AssociateTag      string
-			AccessKey         string
-			SecretKey         string
+			AssociateTag string `mapstructure:"associate_tag"`
+			AccessKey    string `mapstructure:"access_key"`
+			SecretKey    string `mapstructure:"secret_key"`
 		}
 	}
 }

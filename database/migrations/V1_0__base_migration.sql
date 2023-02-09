@@ -49,6 +49,7 @@ CREATE TABLE escrap.scrap_product
     scrap_product_id  BIGSERIAL PRIMARY KEY,
     scrap_provider_id BIGINT REFERENCES escrap.scrap_provider,
     name              VARCHAR                                NOT NULL,
+    url               VARCHAR                                NOT NULL,
     price             NUMERIC(12, 2),
     vendor_id         VARCHAR                                NOT NULL,
     description       VARCHAR,
@@ -86,6 +87,8 @@ CREATE TABLE escrap.scrap_result
     scrap_product_id      BIGINT REFERENCES escrap.scrap_product,
     scrap_result_state_id BIGINT REFERENCES escrap.scrap_result_state,
     api_result            JSONB,
+    api_result_2          JSONB,
+    api_result_3          JSONB,
     created_at            TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
 );
 

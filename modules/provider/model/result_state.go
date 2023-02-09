@@ -1,6 +1,6 @@
 package model
 
-type ScrapResultState int
+type ScrapResultState uint
 
 const (
 	Success ScrapResultState = 1

@@ -9,15 +9,6 @@ const (
 )
 
 type ScrapProviderVendor interface {
-	Scrap(url string) (*ScrapResult, *ScrapProduct, error)
-}
-
-func GetScrapProvider(id uint) ScrapProvider {
-	switch id {
-	case 1:
-		return Amazon
-	case 2:
-		return Ebay
-	}
-	return 0
+	GetVendorId(url string) (string, error)
+	Scrap(url string, product *ScrapProduct) (*ScrapResult, *ScrapProduct, error)
 }

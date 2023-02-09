@@ -1,15 +1,15 @@
 package web
 
 import (
-	"errors"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-gonic/gin"
 	"github.com/giwiro/escrap/common"
 	"github.com/giwiro/escrap/modules/provider"
+	"github.com/giwiro/escrap/modules/provider/model"
 	"github.com/giwiro/escrap/modules/scrap"
 	log "github.com/sirupsen/logrus"
-	"gorm.io/gorm"
 	"net/http"
+	"strconv"
 )
 
 type ScrapController interface {
@@ -38,8 +38,8 @@ func (sc *scrapController) RegisterRoutes(group *gin.RouterGroup) {
 
 		scrapProvider, scrapProviderErr := sc.providerUseCase.FindProviderByUrl(request.Url)
 
-		if scrapProviderErr != nil {
-			if !errors.Is(scrapProviderErr, gorm.ErrRecordNotFound) {
+		if scrapProviderErr != nil || scrapProvider == model.Unset {
+			if scrapProviderErr != nil {
 				log.Info(scrapProviderErr.Error())
 			}
 
@@ -47,7 +47,7 @@ func (sc *scrapController) RegisterRoutes(group *gin.RouterGroup) {
 			return
 		}
 
-		result, product, err := sc.scrapUseCase.ScrapUrl(request.Url, scrapProvider)
+		result, _, err := sc.scrapUseCase.ScrapUrl(request.Url, scrapProvider)
 
 		if err != nil {
 			log.Error(err.Error())
@@ -55,9 +55,11 @@ func (sc *scrapController) RegisterRoutes(group *gin.RouterGroup) {
 			return
 		}
 
-		spew.Dump(result)
-		spew.Dump(product)
+		/*spew.Dump(result)
+		spew.Dump(product)*/
 
-		c.String(200, "Gaaa")
+		c.Header("X-Escrap-Result-Id", strconv.Itoa(int(result.Id)))
+
+		c.JSON(200, result)
 	})
 }
