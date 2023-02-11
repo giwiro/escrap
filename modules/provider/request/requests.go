@@ -9,7 +9,11 @@ import (
 type InsertProductRequest struct {
 	Name          string
 	Url           string
-	Price         decimal.Decimal
+	Price         decimal.NullDecimal
+	Height        decimal.NullDecimal
+	Length        decimal.NullDecimal
+	Weight        decimal.NullDecimal
+	Width         decimal.NullDecimal
 	Description   string
 	ImageUrl      string
 	ScrapProvider model.ScrapProvider
@@ -20,7 +24,11 @@ type UpdateProductRequest struct {
 	ProductId      uint
 	Name           string
 	Url            string
-	Price          decimal.Decimal
+	Price          decimal.NullDecimal
+	Height         decimal.NullDecimal
+	Length         decimal.NullDecimal
+	Weight         decimal.NullDecimal
+	Width          decimal.NullDecimal
 	Description    string
 	ImageUrl       string
 	LastScrappedAt time.Time
@@ -32,7 +40,6 @@ type FindLastResultRequest struct {
 type InsertResultRequest struct {
 	ProductId  uint
 	StateId    model.ScrapResultState
-	ApiResult  []byte
-	ApiResult2 []byte
-	ApiResult3 []byte
+	ApiResult  map[string]interface{}
+	ApiResult2 map[string]interface{}
 }

@@ -8,10 +8,11 @@ import (
 	"github.com/giwiro/escrap/modules/provider"
 	providerDatabase "github.com/giwiro/escrap/modules/provider/database"
 	"github.com/giwiro/escrap/modules/scrap"
+	scrapWeb "github.com/giwiro/escrap/modules/scrap/web"
+	"github.com/giwiro/escrap/modules/search"
+	searchWeb "github.com/giwiro/escrap/modules/search/web"
 	"github.com/giwiro/escrap/modules/version"
 	versionWeb "github.com/giwiro/escrap/modules/version/web"
-
-	scrapWeb "github.com/giwiro/escrap/modules/scrap/web"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -55,6 +56,10 @@ func main() {
 	scrapUseCase := scrap.NewUseCase(providerDao)
 	scrapController := scrapWeb.NewScrapController(scrapUseCase, providerUseCase)
 	scrapController.RegisterRoutes(mainRouter)
+
+	searchUseCase := search.NewUseCase(providerDao)
+	searchController := searchWeb.NewSearchController(searchUseCase, providerUseCase)
+	searchController.RegisterRoutes(mainRouter)
 
 	log.Infof("escrap v%s", version.Version)
 	log.Infof("Listening on: %s", config.Conf.Server.Address)

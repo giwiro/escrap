@@ -6,6 +6,7 @@ import (
 )
 
 type ScrapProviderDao interface {
+	FindProviderByName(name string) (model.ScrapProvider, error)
 	FindProviderByDomain(domain string) (model.ScrapProvider, error)
 	FindProduct(vendorId string) (*model.ScrapProduct, error)
 	InsertProduct(request *request.InsertProductRequest) (*model.ScrapProduct, error)

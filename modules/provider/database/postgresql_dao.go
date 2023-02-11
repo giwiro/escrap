@@ -21,19 +21,39 @@ func NewScrapProviderPgDao(db *gorm.DB) ScrapProviderPgDao {
 	return &scrapProviderPgDao{db}
 }
 
-func (spd *scrapProviderPgDao) FindProviderByDomain(domain string) (model.ScrapProvider, error) {
+func (spd *scrapProviderPgDao) FindProviderByName(name string) (provider model.ScrapProvider, err error) {
+	provider = model.Unset
+
+	switch name {
+	case "amazon":
+		provider = model.Amazon
+		break
+	case "ebay":
+		provider = model.Ebay
+		break
+	}
+
+	return
+}
+
+func (spd *scrapProviderPgDao) FindProviderByDomain(domain string) (provider model.ScrapProvider, err error) {
 	var scrapProvider ScrapProviderDomainEntity
+	provider = model.Unset
 
 	query := spd.db.Where("domain = ?", domain).First(&scrapProvider)
 
-	if err := query.Error; err != nil {
+	err = query.Error
+
+	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return model.Unset, nil
 		}
-		return model.Unset, err
+		return
 	}
 
-	return model.ScrapProvider(scrapProvider.ScrapProviderId), nil
+	provider = model.ScrapProvider(scrapProvider.ScrapProviderId)
+
+	return
 }
 
 func (spd *scrapProviderPgDao) FindProduct(vendorId string) (*model.ScrapProduct, error) {
@@ -58,6 +78,10 @@ func (spd *scrapProviderPgDao) InsertProduct(request *request.InsertProductReque
 		Name:            request.Name,
 		Url:             request.Url,
 		Price:           request.Price,
+		Height:          request.Height,
+		Length:          request.Length,
+		Weight:          request.Weight,
+		Width:           request.Width,
 		VendorId:        request.VendorId,
 		Description:     request.Description,
 		ImageUrl:        request.ImageUrl,
@@ -111,6 +135,10 @@ func (spd *scrapProviderPgDao) UpdateProduct(request *request.UpdateProductReque
 		Name:           request.Name,
 		Url:            request.Url,
 		Price:          request.Price,
+		Height:         request.Height,
+		Length:         request.Length,
+		Weight:         request.Weight,
+		Width:          request.Width,
 		Description:    request.Description,
 		ImageUrl:       request.ImageUrl,
 		LastScrappedAt: request.LastScrappedAt,

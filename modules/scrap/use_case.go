@@ -56,7 +56,7 @@ func (u *useCase) ScrapUrl(url string, provider model.ScrapProvider) (*model.Scr
 			}
 
 			if result != nil {
-				log.Debugf("[Amazon] Fetch from cache: %s", vendorId)
+				log.Infof("[Amazon] Fetch from cache: %s", vendorId)
 				return result, product, nil
 			}
 		}

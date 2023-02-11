@@ -11,7 +11,11 @@ type ScrapProductEntity struct {
 	ScrapProviderId uint
 	Name            string
 	Url             string
-	Price           decimal.Decimal `json:"amount" sql:"type:decimal(12,2);"`
+	Price           decimal.NullDecimal `sql:"type:decimal(12,2);"`
+	Height          decimal.NullDecimal `sql:"type:decimal(12,2);"`
+	Length          decimal.NullDecimal `sql:"type:decimal(12,2);"`
+	Weight          decimal.NullDecimal `sql:"type:decimal(12,2);"`
+	Width           decimal.NullDecimal `sql:"type:decimal(12,2);"`
 	VendorId        string
 	Description     string
 	ImageUrl        string
@@ -25,12 +29,16 @@ func (s ScrapProductEntity) TableName() string {
 }
 
 func (s ScrapProductEntity) MapToModel() *model.ScrapProduct {
-	return &model.ScrapProduct{
+	product := model.ScrapProduct{
 		Id:             s.ScrapProductId,
 		ScrapProvider:  model.ScrapProvider(s.ScrapProviderId),
 		Name:           s.Name,
 		Url:            s.Url,
-		Price:          s.Price.StringFixedBank(2),
+		Price:          s.Price,
+		Height:         s.Height,
+		Length:         s.Length,
+		Weight:         s.Weight,
+		Width:          s.Width,
 		VendorId:       s.VendorId,
 		Description:    s.Description,
 		ImageUrl:       s.ImageUrl,
@@ -38,4 +46,6 @@ func (s ScrapProductEntity) MapToModel() *model.ScrapProduct {
 		CreatedAt:      s.CreatedAt,
 		UpdatedAt:      s.UpdatedAt,
 	}
+
+	return &product
 }

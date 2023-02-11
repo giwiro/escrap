@@ -8,7 +8,8 @@ import (
 )
 
 type UseCase interface {
-	FindProviderByUrl(_url string) (model.ScrapProvider, error)
+	FindProviderByName(name string) (model.ScrapProvider, error)
+	FindProviderByUrl(url string) (model.ScrapProvider, error)
 }
 type useCase struct {
 	scrapProviderDao dao.ScrapProviderDao
@@ -18,17 +19,32 @@ func NewUseCase(scrapProviderDao dao.ScrapProviderDao) UseCase {
 	return &useCase{scrapProviderDao}
 }
 
-func (u *useCase) FindProviderByUrl(_url string) (model.ScrapProvider, error) {
-	parsedUrl, _ := url.Parse(_url)
+func (u *useCase) FindProviderByName(name string) (provider model.ScrapProvider, err error) {
+	provider = model.Unset
+
+	provider, err = u.scrapProviderDao.FindProviderByName(name)
+
+	log.Debugf("name => %s", name)
+
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+func (u *useCase) FindProviderByUrl(_url string) (provider model.ScrapProvider, err error) {
+	provider = model.Unset
+	parsedUrl, err := url.Parse(_url)
 	domain := parsedUrl.Hostname()
 
 	log.Debugf("hostname => %s", parsedUrl.Hostname())
 
-	provider, err := u.scrapProviderDao.FindProviderByDomain(domain)
+	provider, err = u.scrapProviderDao.FindProviderByDomain(domain)
 
 	if err != nil {
-		return model.Unset, err
+		return
 	}
 
-	return provider, nil
+	return
 }

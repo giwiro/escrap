@@ -1,7 +1,6 @@
 package web
 
 import (
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-gonic/gin"
 	"github.com/giwiro/escrap/common"
 	"github.com/giwiro/escrap/modules/provider"
@@ -31,7 +30,7 @@ func (sc *scrapController) RegisterRoutes(group *gin.RouterGroup) {
 		var request ScrapRequest
 
 		if err := c.ShouldBindJSON(&request); err != nil {
-			spew.Dump(err)
+			log.Debug(err.Error())
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
@@ -40,26 +39,26 @@ func (sc *scrapController) RegisterRoutes(group *gin.RouterGroup) {
 
 		if scrapProviderErr != nil || scrapProvider == model.Unset {
 			if scrapProviderErr != nil {
-				log.Info(scrapProviderErr.Error())
+				log.Error(scrapProviderErr)
 			}
 
 			c.JSON(http.StatusNotFound, gin.H{"error": "Could not find scrap provider"})
 			return
 		}
 
-		result, _, err := sc.scrapUseCase.ScrapUrl(request.Url, scrapProvider)
+		result, product, err := sc.scrapUseCase.ScrapUrl(request.Url, scrapProvider)
 
 		if err != nil {
 			log.Error(err.Error())
-			c.JSON(http.StatusNotFound, gin.H{"error": "Could scrap url"})
+			c.JSON(http.StatusNotFound, gin.H{"error": "Could not scrap url"})
 			return
 		}
 
-		/*spew.Dump(result)
-		spew.Dump(product)*/
-
 		c.Header("X-Escrap-Result-Id", strconv.Itoa(int(result.Id)))
 
-		c.JSON(200, result)
+		c.JSON(200, map[string]interface{}{
+			"product": product,
+			"result":  result,
+		})
 	})
 }

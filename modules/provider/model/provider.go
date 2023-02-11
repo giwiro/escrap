@@ -11,4 +11,5 @@ const (
 type ScrapProviderVendor interface {
 	GetVendorId(url string) (string, error)
 	Scrap(url string, product *ScrapProduct) (*ScrapResult, *ScrapProduct, error)
+	Search(keyword string, page uint) (map[string]interface{}, error)
 }

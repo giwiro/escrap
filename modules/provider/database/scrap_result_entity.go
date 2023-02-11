@@ -10,9 +10,8 @@ type ScrapResultEntity struct {
 	ScrapResultId      uint `gorm:"primaryKey"`
 	ScrapProductId     uint
 	ScrapResultStateId uint
-	ApiResult          datatypes.JSON `gorm:"column:api_result" sql:"type:jsonb"`
-	ApiResult2         datatypes.JSON `gorm:"column:api_result_2" sql:"type:jsonb"`
-	ApiResult3         datatypes.JSON `gorm:"column:api_result_3" sql:"type:jsonb"`
+	ApiResult          datatypes.JSONMap `gorm:"column:api_result" sql:"type:jsonb"`
+	ApiResult2         datatypes.JSONMap `gorm:"column:api_result_2" sql:"type:jsonb"`
 	CreatedAt          time.Time
 }
 
